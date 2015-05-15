@@ -1,6 +1,10 @@
 # Voice Memos
 
+![Voice Memos](https://aerotwist.com/static/blog/voice-memos/grabs.jpg)
+
 A sample web app that lets you record voice memos. It uses ES6 classes (via Babel) and [RecorderJS](https://github.com/chris-rudmin/Recorderjs).
+
+[See the site here](https://voice-memos.appspot.com/)
 
 ## License
 
