@@ -1,0 +1,386 @@
+/**
+ *
+ * Copyright 2015 Google Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+.details-view {
+  pointer-events: none;
+}
+
+.details-view--visible {
+  pointer-events: auto;
+}
+
+.details-view__panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+  overflow: hidden;
+
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-flex-wrap: nowrap;
+      -ms-flex-wrap: nowrap;
+          flex-wrap: nowrap;
+  -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -ms-flex-line-pack: center;
+      -webkit-align-content: center;
+          align-content: center;
+  -webkit-align-items: flex-start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+.details-view__wave {
+  pointer-events: none;
+}
+
+.details-view__panel--animatable {
+  transition: -webkit-transform 0.233s cubic-bezier(0,0,0.21,1) 0.04s,
+      opacity 0.113s cubic-bezier(0,0,0.21,1) 0.04s;
+  transition: transform 0.233s cubic-bezier(0,0,0.21,1) 0.04s,
+      opacity 0.113s cubic-bezier(0,0,0.21,1) 0.04s;
+}
+
+.details-view__panel--visible {
+  opacity: 1;
+  pointer-events: auto;
+
+  &.details-view__panel--animatable {
+    transition: -webkit-transform 0.233s cubic-bezier(0,0,0.21,1) 0.04s,
+        opacity 0.233s cubic-bezier(0,0,0.21,1) 0.123s;
+    transition: transform 0.233s cubic-bezier(0,0,0.21,1) 0.04s,
+        opacity 0.233s cubic-bezier(0,0,0.21,1) 0.123s;
+  }
+}
+
+.details-view__box-reveal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+  width: 100%;
+  height: 100%;
+  background: $background;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.details-view__box-reveal:after {
+  content: '';
+  height: 230px;
+  width: 100%;
+  display: block;
+  background: $primaryDark;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+  -webkit-transform: scaleY(0);
+          transform: scaleY(0);
+}
+
+.details-view__box-reveal--animatable {
+  transition: -webkit-transform 0.233s cubic-bezier(0,0,0.21,1) 0.04s,
+      opacity 0.233s cubic-bezier(0,0,0.21,1) 0.04s;
+  transition: transform 0.233s cubic-bezier(0,0,0.21,1) 0.04s,
+      opacity 0.233s cubic-bezier(0,0,0.21,1) 0.04s;
+}
+
+.details-view__box-reveal--animatable:after {
+  transition: -webkit-transform 0.233s cubic-bezier(0,0,0.21,1) 0.04s,
+      opacity 0.233s cubic-bezier(0,0,0.21,1) 0.04s;
+  transition: transform 0.233s cubic-bezier(0,0,0.21,1) 0.04s,
+      opacity 0.233s cubic-bezier(0,0,0.21,1) 0.04s;
+}
+
+.details-view__box-reveal--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.details-view__box-reveal--expanded:after {
+  -webkit-transform: scaleY(1);
+          transform: scaleY(1);
+}
+
+.details-view__header {
+  height: 230px;
+  min-height: 230px;
+  width: 100%;
+  position: relative;
+}
+
+.details-view__header--raised {
+  box-shadow: 0 0 4px rgba(0, 0, 0, .14),
+      0 4px 8px rgba(0, 0, 0, .28);
+}
+
+.details-view__header-buttons {
+  height: 56px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 16px;
+}
+
+.details-view__delete,
+.details-view__back,
+.details-view__download,
+.details-view__edit {
+  width: 24px;
+  height: 24px;
+  background: url(/images/ic_arrow_back_24px.svg) center center no-repeat;
+  text-indent: -30000px;
+  overflow: hidden;
+  opacity: 0.54;
+  transition: opacity 0.233s cubic-bezier(0,0,0.21,1);
+  border: none;
+  outline: none;
+  cursor: pointer;
+  will-change: transform;
+}
+
+.details-view__download {
+  display: block;
+  float: right;
+  margin-left: 24px;
+  background-image: url(/images/ic_file_download_24px.svg);
+}
+
+.details-view__edit {
+  display: block;
+  float: right;
+  margin-left: 24px;
+  background-image: url(/images/ic_mode_edit_24px.svg);
+}
+
+.details-view__delete {
+  display: block;
+  float: right;
+  background-image: url(/images/ic_delete_white_24px.svg);
+}
+
+.details-view__delete:hover,
+.details-view__delete:focus,
+.details-view__download:hover,
+.details-view__download:focus,
+.details-view__edit:hover,
+.details-view__edit:focus,
+.details-view__back:hover,
+.details-view__back:focus {
+  opacity: 1;
+}
+
+.details-view__title {
+  color: #FFF;
+  font-size: 34px;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  position: absolute;
+  bottom: 14px;
+  left: 16px;
+  width: 75%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  line-height: 1;
+  padding: 0 0 10px 0;
+  margin: 0;
+}
+
+.details-view__playback {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  background: $secondary;
+  border-radius: 50%;
+  right: 16px;
+  bottom: -28px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, .14),
+      0 4px 8px rgba(0, 0, 0, .28);
+
+}
+
+.details-view__playback-toggle {
+  width: 56px;
+  height: 56px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url(/images/ic_play_arrow_24px.svg) center center no-repeat;
+  text-indent: -30000px;
+  overflow: hidden;
+  border: none;
+  outline: none;
+  border-radius: 50%;
+
+  &:focus,
+  &:hover {
+    border: 4px solid #AD1457;
+  }
+}
+
+.details-view__playback-progress {
+  pointer-events: none;
+  position: absolute;
+}
+
+.details-view__content {
+
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.details-view__description-title {
+  height: 48px;
+  line-height: 48px;
+  padding: 0 16px;
+  font-size: 14px;
+  opacity: 0.54;
+  margin: 0;
+}
+
+.details-view__description {
+  font-size: 14px;
+  line-height: 24px;
+  padding: 8px 16px 24px 16px;
+  opacity: 0.87;
+}
+
+@media (min-width: 600px) {
+  .details-view {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 360px;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .details-view__header {
+    height: 144px;
+    min-height: 144px;
+  }
+
+  .details-view__box-reveal:after {
+    height: 144px;
+  }
+
+  .details-view__back {
+    background-image: url(/images/ic_close_24px.svg);
+  }
+
+  .details-view__title {
+    font-size: 16px;
+    font-weight: 500;
+    left: 32px;
+    width: 65%;
+  }
+
+  .details-view__description-title {
+    padding: 0 32px;
+  }
+
+  .details-view__description {
+    padding: 8px 32px 24px 32px;
+  }
+
+  .details-view__box-reveal:after {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+
+  .details-view__box-reveal--animatable:after {
+    transition: none;
+  }
+
+  .details-view__header-buttons {
+    padding: 16px 24px 16px 26px;
+  }
+
+  .details-view__playback {
+    right: 24px;
+  }
+}
+
+@media (min-width: 960px) {
+  .details-view {
+    position: absolute;
+    margin-top: 56px;
+    left: 46%;
+    width: 504px;
+    height: 100%;
+    overflow: hidden;
+    margin-left: 8px;
+  }
+
+  .details-view__header-buttons {
+    padding: 24px 24px 16px 26px;
+  }
+
+  .details-view__header {
+    height: 288px;
+    min-height: 288px;
+  }
+
+  .details-view__box-reveal {
+    opacity: 0;
+  }
+
+  .details-view__box-reveal--visible {
+    opacity: 1;
+  }
+
+  .details-view__box-reveal:after {
+    height: 288px;
+    opacity: 1;
+  }
+
+  .details-view__box-reveal--animatable:after {
+    transition: opacity 0.233s cubic-bezier(0,0,0.21,1) 0.04s;
+    transition: opacity 0.233s cubic-bezier(0,0,0.21,1) 0.04s;
+  }
+
+  .details-view__title {
+    font-size: 34px;
+    font-weight: 500;
+    left: 32px;
+    width: 75%;
+  }
+}
