@@ -94,7 +94,8 @@ class Router {
       document.body.classList.remove('app-deeplink');
 
     // Hide the loader.
-    this.loader.classList.add('hidden');
+    //this.loader.classList.add('hidden');
+    this.loader.active = false;
 
     if (this.currentAction === this.routes[action]) {
 

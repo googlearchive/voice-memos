@@ -1,0 +1,26 @@
+{
+  "name": "voice-demo",
+  "version": "0.0.0",
+  "homepage": "https://github.com/GoogleChrome/voice-memos",
+  "authors": [
+    "Eric Bidelman <ebidel@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "paper-drawer-panel": "PolymerElements/paper-drawer-panel#~0.9.4",
+    "paper-header-panel": "PolymerElements/paper-header-panel#~0.9.1",
+    "paper-icon-button": "PolymerElements/paper-icon-button#~0.9.1",
+    "paper-toolbar": "PolymerElements/paper-toolbar#~0.9.1",
+    "paper-item": "PolymerElements/paper-item#~0.9.1",
+    "paper-fab": "PolymerElements/paper-fab#~0.9.1",
+    "paper-spinner": "PolymerElements/paper-spinner#~0.9.1",
+    "paper-toast": "PolymerElements/paper-toast#~0.9.1"
+  }
+}

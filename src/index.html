@@ -29,11 +29,45 @@ limitations under the License.
     <link rel="stylesheet" href="/styles/voicememo-core.css">
 
     <link rel="manifest" href="/manifest.json">
+
+    <script src="/third_party/bower_components/webcomponentsjs/webcomponents-lite.min.js" ></script>
+    <link rel="import" href="elements.html">
   </head>
 
   <body class="{{ deeplink_class }}">
 
-    <header class="header">
+
+    <paper-drawer-panel force-narrow drawer-width="304px">
+
+      <paper-header-panel mode="seamed" drawer>
+        <paper-toolbar class="side-nav__header">
+          <h1 class="side-nav__title bottom">Voice Memos</h1>
+        </paper-toolbar>
+        <div class="side-nav__body fit">
+          <paper-item><iron-icon icon="delete"></iron-icon>Delete all memos</paper-item>
+          <paper-item><iron-icon icon="info-outline"></iron-icon><a tabindex="-1" target="_blank" href="https://aerotwist.com/blog/voice-memos/" class="side-nav__blog-post">See the blog post</a></paper-item>
+        </div>
+        <div class="side-nav__version">Version @VERSION@</div>
+      </paper-header-panel>
+
+      <paper-header-panel main mode="standard">
+        <paper-toolbar>
+          <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+          <h1 class="header__title bottom">Voice Memos</h1>
+        </paper-toolbar>
+        <main class="main js-main content fit" aria-role="main">
+          <div class="main__inner">
+            <section class="list-view js-list-view">
+
+            </section>
+          </div>
+        </main>
+      </paper-header-panel>
+
+    </paper-drawer-panel>
+
+<!--
+    <header class="header" hidden>
 
         <button tabindex="-1" class="header__menu js-toggle-menu">
           Toggle nav menu
@@ -42,7 +76,7 @@ limitations under the License.
         <h1 class="header__title">Voice Memos</h1>
     </header>
 
-    <main class="main js-main" aria-role="main">
+    <main class="main js-main" aria-role="main" hidden>
       <div class="main__inner">
         <section class="list-view js-list-view">
 
@@ -51,7 +85,7 @@ limitations under the License.
       </div>
 
     </main>
-
+ -->
     <aside class="empty-set-cta js-cta">
       <svg width="168" height="168" viewBox="0 0 168 168" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><title>Group</title><defs><circle id="a" cx="84" cy="84" r="84"/><linearGradient x1="20.844%" y1="4.395%" x2="62.78%" y2="92.688%" id="c"><stop stop-color="#5B5B5B" offset="0%"/><stop stop-color="#2A2A2A" offset="100%"/></linearGradient><linearGradient x1="50%" y1="62.008%" x2="65.811%" y2="67.836%" id="d"><stop stop-color="#FFE1AF" offset="0%"/><stop stop-color="#E4C99C" offset="100%"/></linearGradient><linearGradient x1="64.181%" y1="45.328%" x2="94.953%" y2="60.982%" id="e"><stop stop-color="#009688" offset="0%"/><stop stop-color="#00796B" offset="100%"/></linearGradient></defs><g fill="none" fill-rule="evenodd"><mask id="b" fill="#fff"><use xlink:href="#a"/></mask><use fill="#64B5F6" xlink:href="#a"/><path d="M133.88 43c-.387-.687-1.23-1.378-2.88-2-10.858-3.986-38.782-14.306-42-15-3.832-1.95-6.283.03-7 1-13.99 22.478-39.723 63.51-47 75-.46.774-.773 1.44-.915 2H34v.55c-.002.05-.002.1 0 .15v3.85c-.002.05-.002.1 0 .15v.472h.095c.14.354.436.63.905.828 1.432 1.03 44.33 20.628 47 22 2.094.806 2.995-.967 4-3 7.79-12.958 33.567-56.83 48-80 .168-.538.25-1.14 0-1.752V45c.168-.538.25-1.14 0-1.752V43h-.12z" fill="#212121" mask="url(#b)"/><path d="M131 41.172c-3-1.192-38.782-14.307-42-15-3.832-1.952-6.283.028-7 1-13.99 22.477-39.723 63.508-47 75-1.248 2.1-1.42 3.397 0 4 1.432 1.03 44.33 20.627 47 22 2.094.805 2.995-.968 4-3 7.79-12.958 33.203-56.04 47.636-79.21.38-1.212.364-3.6-2.636-4.79z" fill="url(#c)" mask="url(#b)"/><path d="M85.04 29.6l43.206 16.02-45.69 76.532-43.27-19.296L85.038 29.6z" fill="#FFF" mask="url(#b)"/><path d="M85.013 29.038l-6.595 10.438 44.225 16.448 6.22-10.613-43.85-16.27z" fill="#673AB7" mask="url(#b)"/><path d="M85.16 29.17l-2.815 3.87 44.078 16.314 2.44-4.043L85.16 29.17z" fill="#4527A0" mask="url(#b)"/><path d="M65.72 69.8l2.7.064 7.442-10.12-5.997 11.873 3.548-4.266-1.48 5.3 12.734-18.17-10.35 18.7 9.718-10.59-5.845 11.64 5.55-6.34-2.165 7.22 3.34 1.72 6.16-4.252-1.917 5.574 2.94 1.295 11.034-14.27-8.04 14.67 5.962 2.504-1.15 1.73-5.586-2.98-8.764 12.39 6.022-12.994-2.974-1.37-3.972 3.217-.016-4.665-3.682-1.53-4.936 5.29 1.578-6.063-6.94 10.32L73.85 73.9 61.82 92.93l9.44-19.37-5.54 5.555 3.41-6.557-7.62 10.46L67.256 71.6l-1.536-1.8z" fill="#EC407A" mask="url(#b)"/><path d="M82.703 84.013s6.182 2.97 6.182 8.336c0 5.36 1.132 18.86 1.132 18.86l.348 8.43-11.895-3.14L82.703 84z" fill-opacity=".14" fill="#000" mask="url(#b)"/><path d="M76.517 79c-6.076 0-6.193 4.916-7.955 14.265-1.762 9.348-2.552 17.04-2.552 20.357 0 3.315-.515 3.665 1.018 18.173 1.534 14.508-3.516 24.158-3.516 24.158l33.352 5.715s0-15.275 11.082-34.48c11.082-19.204 16.01-33.923 16.01-33.923l3.466-19.45-4.673-6.824-21.69 36.46s-7.29 5.03-9.95 5.32c-2.66.29-5.236-1.37-6.12-5.31-.89-3.94 0-11.74 0-16.29 0-4.552-2.41-8.16-8.486-8.16z" fill="url(#d)" mask="url(#b)"/><path d="M76.41 80.113c4.082 0 5.73 5.56 5.73 5.56v2.864l-11.797.304s1.986-8.72 6.067-8.72z" fill="#FEF5DE" mask="url(#b)"/><path d="M64.344 153.965l-9.13 23.64L97.8 181.25v-24.748l-33.458-2.537z" fill="url(#e)" mask="url(#b)"/></g></svg>
       <span style="margin-top: 16px;">Record something!</span>
@@ -138,7 +172,7 @@ limitations under the License.
 
     </section>
 
-    <section class="side-nav js-side-nav">
+    <section class="side-nav js-side-nav" hidden>
       <div class="side-nav__content js-side-nav-content">
 
         <div class="side-nav__header">
@@ -154,7 +188,7 @@ limitations under the License.
       </div>
     </section>
 
-    <aside class="toast-view"></aside>
+    <paper-toast></paper-toast>
 
     <div class="edit-view__circular-reveal-container">
       <div class="edit-view__circular-reveal edit-view__circular-reveal--collapsed js-circular-reveal"></div>
@@ -174,54 +208,9 @@ limitations under the License.
       </div>
     </aside>
 
-    <button tabindex="-1" class="new-recording-btn js-new-recording-btn">
-      New recording
-    </button>
+    <paper-fab icon="av:mic" tabindex="-1" class="new-recording-btn js-new-recording-btn"></paper-fab>
 
-    <div class="loader">
-      <svg viewBox="0 0 32 32" width="32" height="32">
-        <style>
-          #spinner {
-            box-sizing: border-box;
-            stroke: #673AB7;
-            stroke-width: 3px;
-            transform-origin: 50%;
-
-            -webkit-animation: line 1.6s cubic-bezier(0.4, 0.0, 0.2, 1) infinite, rotate 1.6s linear infinite;
-          }
-
-          @-webkit-keyframes rotate {
-
-            from {
-              transform: rotate(0)
-            }
-
-            to {
-              transform: rotate(450deg);
-            }
-          }
-
-          @-webkit-keyframes line {
-            0% {
-              stroke-dasharray: 2, 85.964;
-              transform: rotate(0);
-            }
-
-            50% {
-              stroke-dasharray: 65.973, 21.9911;
-              stroke-dashoffset: 0;
-            }
-
-            100% {
-              stroke-dasharray: 2, 85.964;
-              stroke-dashoffset: -65.973;
-              transform: rotate(90deg);
-            }
-          }
-        </style>
-        <circle id="spinner" cx="16" cy="16" r="14" fill="none"></circle>
-      </svg>
-    </div>
+    <paper-spinner class="loader" alt="Loading app" active></paper-spinner>
 
     <script src="/scripts/voicememo-core.js"></script>
 

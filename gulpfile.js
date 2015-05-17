@@ -26,12 +26,14 @@ var gulp = require('gulp'),
     gutil = require('gulp-util'),
     babelify = require('babelify'),
     minifycss = require('gulp-minify-css'),
+    minifyhtml = require('gulp-minify-html'),
     uglify = require('gulp-uglify'),
     sass = require('gulp-sass'),
     streamify = require('gulp-streamify'),
     runSequence = require('run-sequence'),
     license = require('gulp-license'),
     replace = require('gulp-replace'),
+    vulcanize = require('gulp-vulcanize'),
     bump = require('gulp-bump');
 var version = null;
 
@@ -156,6 +158,18 @@ gulp.task('serviceworker', function() {
   gulp.src('./src/scripts/sw.js')
     .pipe(replace(/@VERSION@/g, version))
     .pipe(gulp.dest('./dist/scripts'))
+});
+
+gulp.task('vulcanize', function() {
+  return gulp.src(['./src/elements.html'])
+    .pipe(vulcanize({
+      inlineScripts: true,
+      stripComments: true,
+      inlineCss: true,
+      dest: './src'
+    }))
+    //.pipe(minifyhtml())
+    .pipe(gulp.dest('./dist/'));
 });
 
 /** Watches */

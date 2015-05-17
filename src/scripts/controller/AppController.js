@@ -114,9 +114,9 @@ export default class AppController extends Controller {
           this.newRecordingButton.removeEventListener('click', showWaitAnimation);
         });
 
-        this.sideNavToggleButton.addEventListener('click', () => {
-          this.toggleSideNav();
-        });
+        // this.sideNavToggleButton.addEventListener('click', () => {
+        //   this.toggleSideNav();
+        // });
       });
 
       if ('serviceWorker' in navigator) {
@@ -180,12 +180,12 @@ export default class AppController extends Controller {
   }
 
   show () {
-    this.sideNavToggleButton.tabIndex = 1;
+    // this.sideNavToggleButton.tabIndex = 1;
     this.newRecordingButton.tabIndex = 2;
   }
 
   hide () {
-    this.sideNavToggleButton.tabIndex = -1;
+    // this.sideNavToggleButton.tabIndex = -1;
     this.newRecordingButton.tabIndex = -1;
 
     PubSubInstance().then(ps => {
@@ -204,7 +204,7 @@ export default class AppController extends Controller {
   openSideNav() {
 
     this.sideNav.classList.add('side-nav--visible');
-    this.sideNavToggleButton.focus();
+    // this.sideNavToggleButton.focus();
 
     var onSideNavTransitionEnd = (e) => {
 

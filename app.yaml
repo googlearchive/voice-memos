@@ -22,6 +22,12 @@ handlers:
   upload: dist/images/(.*)
   secure: always
 
+- url: /elements.html
+  static_files: dist/elements.html
+  #expiration: "1s"
+  upload: dist/elements.html
+  secure: always
+
 - url: /sw.js
   static_files: dist/scripts/sw.js
   expiration: "1s"
@@ -46,10 +52,9 @@ handlers:
   upload: dist/scripts/(.*)
   secure: always
 
-- url: /third_party/(.*)
-  static_files: dist/third_party/\1
+- url: /third_party/
+  static_dir: dist/third_party
   expiration: "1d"
-  upload: dist/third_party/(.*)
   secure: always
 
 - url: /styles/(.*)
