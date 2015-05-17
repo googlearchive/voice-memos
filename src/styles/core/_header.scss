@@ -20,6 +20,7 @@ paper-header-panel[drawer] {
 }
 
 paper-header-panel[main] {
+  height: 100%;
   paper-toolbar {
     color: #FFF;
     background: $primary;

@@ -16,7 +16,7 @@
  */
 
 .main {
-  padding-top: 72px;
+  padding-top: 24px;
   -webkit-flex: 1;
       -ms-flex: 1;
           flex: 1;
@@ -68,11 +68,11 @@
   opacity: 1;
 }
 
-@media (min-width: 600px) {
-  .main {
-    padding-top: 160px;
-  }
-}
+// @media (min-width: 600px) {
+//   .main {
+//     padding-top: 160px;
+//   }
+// }
 
 @media (min-width: 960px) {
   .main__inner {
