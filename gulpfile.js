@@ -19,9 +19,10 @@ var isProd = false;
 var gulp = require('gulp'),
     fs = require('fs'),
     del = require('del'),
-    watch = require('gulp-watch')
+    watch = require('gulp-watch'),
     watchify = require('watchify'),
     browserify = require('browserify'),
+    collapser = require( 'bundle-collapser/plugin' ),
     source = require('vinyl-source-stream'),
     gutil = require('gulp-util'),
     babelify = require('babelify'),
@@ -34,6 +35,8 @@ var gulp = require('gulp'),
     replace = require('gulp-replace'),
     bump = require('gulp-bump');
 var version = null;
+
+
 
 function createBundle(url) {
   return browserify({
@@ -71,7 +74,7 @@ function buildBundle(bundleName) {
   return b.pipe(license('Apache', {
       organization: 'Google Inc. All rights reserved.'
     }))
-    .pipe(gulp.dest('./dist/scripts'))
+    .pipe(gulp.dest('./dist/scripts'));
 }
 
 var bundles = {
@@ -110,7 +113,7 @@ gulp.task('styles', function() {
       .pipe(license('Apache', {
         organization: 'Google Inc. All rights reserved.'
       }))
-      .pipe(gulp.dest('./dist/styles'))
+      .pipe(gulp.dest('./dist/styles'));
 });
 
 /** Scripts */
@@ -119,16 +122,16 @@ gulp.task('scripts', function() {
   for (var b = 0; b < bundleKeys.length; b++) {
     buildBundle(bundleKeys[b]);
   }
-})
+});
 
 /** Root */
 gulp.task('root', function() {
   gulp.src('./src/*.*')
     .pipe(replace(/@VERSION@/g, version))
-    .pipe(gulp.dest('./dist/'))
+    .pipe(gulp.dest('./dist/'));
 
   gulp.src('./src/favicon.ico')
-    .pipe(gulp.dest('./dist/'))
+    .pipe(gulp.dest('./dist/'));
 });
 
 /** HTML */
@@ -136,26 +139,26 @@ gulp.task('html', function() {
 
   gulp.src('./src/**/*.html')
     .pipe(replace(/@VERSION@/g, version))
-    .pipe(gulp.dest('./dist/'))
+    .pipe(gulp.dest('./dist/'));
 });
 
 /** Images */
 gulp.task('images', function() {
   gulp.src('./src/images/**/*.*')
-    .pipe(gulp.dest('./dist/images'))
+    .pipe(gulp.dest('./dist/images'));
 });
 
 /** Third Party */
 gulp.task('third_party', function() {
   gulp.src('./src/third_party/**/*.*')
-    .pipe(gulp.dest('./dist/third_party'))
+    .pipe(gulp.dest('./dist/third_party'));
 });
 
 /** Service Worker */
 gulp.task('serviceworker', function() {
   gulp.src('./src/scripts/sw.js')
     .pipe(replace(/@VERSION@/g, version))
-    .pipe(gulp.dest('./dist/scripts'))
+    .pipe(gulp.dest('./dist/scripts'));
 });
 
 /** Watches */
@@ -196,8 +199,15 @@ gulp.task('bump', function() {
 
 gulp.task('default', function() {
   isProd = true;
+
+  // add collapser to minify the output
+  Object.keys(bundles)
+    .forEach(function (key) {
+      bundles[key].bundle = bundles[key].bundle.plugin(collapser);
+    });
+
   return runSequence('clean', 'bump', 'getversion', allTasks);
-})
+});
 
 gulp.task('dev', function() {
   return runSequence('clean', 'getversion', allTasks, 'watch');
