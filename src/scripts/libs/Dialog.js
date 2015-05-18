@@ -35,11 +35,16 @@ class Dialog {
     this.okayButton = this.view.querySelector('.js-okay');
   }
 
-  show (title, message) {
+  show (title, message, hideCancel) {
 
     this.title.textContent = title;
     this.message.textContent = message;
     this.view.classList.add('dialog-view--visible');
+
+    if (hideCancel)
+      this.cancelButton.classList.add('hidden');
+    else
+      this.cancelButton.classList.remove('hidden');
 
     return new Promise((resolve, reject) => {
 

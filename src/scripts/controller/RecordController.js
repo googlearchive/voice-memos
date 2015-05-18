@@ -19,6 +19,7 @@ import Controller from './Controller';
 import MemoModel from '../model/MemoModel';
 import PubSubInstance from '../libs/PubSub';
 import RouterInstance from '../libs/Router';
+import DialogInstance from '../libs/Dialog';
 
 export default class RecordController extends Controller {
 
@@ -271,6 +272,22 @@ export default class RecordController extends Controller {
       // }
     });
 
+    this.recorder.addEventListener('streamError', () => {
+
+      DialogInstance()
+        .then(dialog => {
+
+          var hideCancelButton = true;
+
+          return dialog.show(
+            'Booooo!',
+            'There is a problem getting access to the microphone.',
+            hideCancelButton);
+
+        })
+        .catch( () => {});
+
+    });
   }
 
   stopRecording () {
