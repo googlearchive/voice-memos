@@ -98,7 +98,8 @@
 
 .side-nav__delete-memos,
 .side-nav__delete-all,
-.side-nav__blog-post {
+.side-nav__blog-post,
+.side-nav__file-bug-report {
   font-family: 'Roboto';
   font-size: 14px;
   outline: none;
@@ -119,6 +120,12 @@
 
 .side-nav__blog-post {
   background-image: url(/images/ic_info_outline_24px.svg);
+  line-height: 48px;
+  text-decoration: none;
+}
+
+.side-nav__file-bug-report {
+  background-image: url(/images/ic_feedback_24px.svg);
   line-height: 48px;
   text-decoration: none;
 }
