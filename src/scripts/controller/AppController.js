@@ -147,7 +147,8 @@ export default class AppController extends Controller {
 
                 if (isUpdate) {
                   ToasterInstance().then(toaster => {
-                    toaster.toast('App updated.');
+                    toaster.toast(
+                        'App updated. Restart for the new version.');
                   });
                 } else {
                   ToasterInstance().then(toaster => {

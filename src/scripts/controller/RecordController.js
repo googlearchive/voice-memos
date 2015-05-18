@@ -285,6 +285,10 @@ export default class RecordController extends Controller {
             hideCancelButton);
 
         })
+        .then( () => {
+          this.killStream();
+          this.stopRecording();
+        })
         .catch( () => {});
 
     });
