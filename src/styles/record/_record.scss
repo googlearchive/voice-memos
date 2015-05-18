@@ -95,13 +95,13 @@
 .record-view__record-start-btn:after {
   content: '';
   display: block;
-  width: 40px;
-  height: 40px;
-  background: #E91E63;
+  width: 44px;
+  height: 44px;
+  background: #E91E63 url(/images/ic_mic_24px.svg) center center no-repeat;
   border-radius: 50%;
   position: absolute;
-  left: 8px;
-  top: 8px;
+  left: 6px;
+  top: 6px;
   box-sizing: border-box;
   transition: all 0.2s cubic-bezier(0,0,0.21,1);
   transform-origin: 0 0;
@@ -109,7 +109,8 @@
 
 .record-view__record-start-btn[disabled]:after {
   border-radius: 4px;
-  transform: translate(6px, 6px) scale(0.7);
+  background-image: none;
+  transform: translate(8px, 8px) scale(0.636363);
 }
 
 .record-view__record-start-btn:focus:after {

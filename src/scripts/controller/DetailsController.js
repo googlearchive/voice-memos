@@ -426,6 +426,7 @@ export default class DetailsController extends Controller {
       this.renderWaveCanvas();
 
       this.panel.appendChild(this.audio);
+
     }).catch(e => {
 
       RouterInstance().then(router => {

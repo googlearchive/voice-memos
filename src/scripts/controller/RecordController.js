@@ -55,7 +55,7 @@ export default class RecordController extends Controller {
 
     this.recordCancelButton.addEventListener('click', () => {
 
-      this.deletePendingRecording = false;
+      this.deletePendingRecording = true;
 
       RouterInstance().then(router => {
         router.go('/');
@@ -103,7 +103,6 @@ export default class RecordController extends Controller {
   hide () {
     this.recordStartButton.tabIndex = -1;
     this.stopRecording();
-    this.deletePendingRecording = false;
 
     this.view.classList.remove('record-view--visible');
   }
@@ -135,6 +134,17 @@ export default class RecordController extends Controller {
     this.volumeReadoutCtx.restore();
   }
 
+  killStream () {
+    if (!this.recorder.stream)
+      return;
+
+    if (typeof this.recorder.stream.stop !== 'function')
+      return;
+
+    this.recorder.stream.stop();
+    this.recorder = null;
+  }
+
   startRecording () {
 
     if (this.recording)
@@ -157,10 +167,11 @@ export default class RecordController extends Controller {
 
     this.recorder.addEventListener('dataAvailable', (e) => {
 
-      // recognition.stop();
+      // recognition.stop()
 
       if (this.deletePendingRecording) {
         this.deletePendingRecording = false;
+        this.killStream();
         return;
       }
 
@@ -187,13 +198,9 @@ export default class RecordController extends Controller {
         RouterInstance().then(router => {
           router.go(`/edit/${newMemo.url}`);
         });
-      })
+      });
 
-      if (this.recorder.stream &&
-          typeof this.recorder.stream.stop === 'function') {
-        this.recorder.stream.stop();
-        this.recorder = null;
-      }
+      this.killStream();
     });
 
     var listener = this.recorder.audioContext.createAnalyser();
