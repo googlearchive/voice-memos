@@ -413,8 +413,8 @@ export default class DetailsController extends Controller {
 
     return MemoModel.get(id).then(memo => {
 
-      this.title.innerText = memo.title;
-      this.description.innerText = memo.description || "No description";
+      this.title.textContent = memo.title;
+      this.description.textContent = memo.description || "No description";
       this.volumeData = memo.volumeData;
 
       this.audio.src = URL.createObjectURL(memo.audio);

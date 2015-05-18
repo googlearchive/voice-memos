@@ -83,6 +83,21 @@ export default class ListController extends Controller {
       });
   }
 
+  escapeHTML (str) {
+
+    if (str === null)
+      return str;
+
+    // Similar to both http://php.net/htmlspecialchars and
+    // http://www.2ality.com/2015/01/template-strings-html.html in what
+    // it chooses to replace.
+    return str.replace(/&/g, '&amp;')
+        .replace(/>/g, '&gt;')
+        .replace(/</g, '&lt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+  }
+
   populate () {
 
     if (!this.memos.length) {
@@ -98,21 +113,23 @@ export default class ListController extends Controller {
     this.memos.forEach((memo) => {
 
       var memoTimeAgo = moment(memo.time).fromNow();
+      var memoTitle = this.escapeHTML(memo.title);
+      var memoDescription = this.escapeHTML(memo.description);
 
       list += `<li class="list-view__item" id="vm-${memo.url}" data-url="${memo.url}">
                 <div class="list-view__item-details">
                   <div class="list-view__item-date">${memoTimeAgo}</div>
-                  <div class="list-view__item-title">${memo.title}</div>`
+                  <div class="list-view__item-title">${memoTitle}</div>`
 
-      if (memo.description !== null)
+      if (memo.description !== null) {
         list += `<div class="list-view__item-description">
-                  ${memo.description}
+                  ${memoDescription}
                 </div>`
+      }
 
-      list += `</div>
-
-              </li>`;
+      list += '</div></li>';
     });
+
     list += '</ol>';
 
     this.view.innerHTML = list;
