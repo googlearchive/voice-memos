@@ -161,6 +161,10 @@
 
 @media (min-width: 600px) {
 
+  .list-view__item {
+    will-change: auto;
+  }
+
   .list-view__item-date {
     right: 24px;
   }
