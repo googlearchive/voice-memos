@@ -125,7 +125,7 @@ export default class DetailsController extends Controller {
     this.populateDetails(id).then( () => {
 
       // Locate the source element
-      this.memoId = id
+      this.memoId = id;
 
       var source = document.querySelector('#vm-' + id);
 
@@ -136,6 +136,7 @@ export default class DetailsController extends Controller {
         this.reveal.classList.add('details-view__box-reveal--expanded');
         this.panel.classList.add('details-view__panel--visible');
         this.underPanel.classList.add('view-underpanel--visible');
+        this.renderWaveCanvas();
         return;
       }
 
@@ -165,11 +166,18 @@ export default class DetailsController extends Controller {
       }
 
       // Sometimes we have to wait a while for changes to take hold, so let's
-      // give the browser 40ms to do that then go on the next frame. No, I don't
+      // give the browser 5ms to do that then go on the next frame. No, I don't
       // think it's great, either.
       setTimeout( () => {
 
         requestAnimationFrame( () => {
+
+          let onRevealAnimEnd = (e) => {
+            this.renderWaveCanvas();
+            this.reveal.removeEventListener('transitionend', onRevealAnimEnd);
+          }
+
+          this.reveal.addEventListener('transitionend', onRevealAnimEnd);
 
           this.header.classList.add('header--collapsed');
 
@@ -208,7 +216,7 @@ export default class DetailsController extends Controller {
           }
         });
 
-      }, 40);
+      }, 5);
     });
   }
 
@@ -262,10 +270,11 @@ export default class DetailsController extends Controller {
           ')';
       }
 
-      var hideReveal = (e) => {
-        this.reveal.removeEventListener('transitionend', hideReveal);
+      var hideElements = (e) => {
+        this.reveal.removeEventListener('transitionend', hideElements);
         this.reveal.addEventListener('transitionend', removeRevealTransform);
         this.reveal.classList.remove('details-view__box-reveal--visible');
+        this.waveCanvas.classList.remove('details-view__wave--visible');
       }
 
       var removeRevealTransform = (e) => {
@@ -282,7 +291,7 @@ export default class DetailsController extends Controller {
       }
 
       this.underPanel.classList.remove('view-underpanel--visible');
-      this.reveal.addEventListener('transitionend', hideReveal);
+      this.reveal.addEventListener('transitionend', hideElements);
       this.memoId = null;
 
       if (viewport960px)
@@ -340,6 +349,8 @@ export default class DetailsController extends Controller {
 
     if (!this.volumeData)
       return;
+
+    this.waveCanvas.classList.add('details-view__wave--visible');
 
     var padding = 50;
     var maxHeight = this.waveHeight - (2 * padding);
@@ -421,9 +432,7 @@ export default class DetailsController extends Controller {
       this.downloadButton.href = this.audio.src;
       this.downloadButton.download = memo.title;
 
-      this.configureWaveCanvas();
       this.configurePlaybackCanvas();
-      this.renderWaveCanvas();
 
       this.panel.appendChild(this.audio);
 

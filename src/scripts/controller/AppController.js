@@ -224,9 +224,7 @@ export default class AppController extends Controller {
           onSideNavTransitionEnd);
 
     requestAnimationFrame( () => {
-
       this.sideNavContent.style.transform = 'translateX(0px)';
-
     });
   }
 
@@ -234,6 +232,11 @@ export default class AppController extends Controller {
     this.sideNav.classList.remove('side-nav--visible');
     this.sideNavContent.classList.add('side-nav__content--animatable');
     this.sideNavContent.style.transform = 'translateX(-102%)';
+
+    let onSideNavClose = () => {
+      this.sideNav.removeEventListener('transitionend', onSideNavClose);
+    }
+    this.sideNav.addEventListener('transitionend', onSideNavClose);
   }
 
   resetAllData() {

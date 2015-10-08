@@ -54,7 +54,8 @@ body {
   -ms-flex-line-pack: stretch;
       -webkit-align-content: stretch;
           align-content: stretch;
-  background: #ececec;
+  background: $background;
+  will-change: transform;
 }
 
 body:after {
@@ -67,7 +68,7 @@ body:after {
   pointer-events: none;
   background: $background;
   opacity: 0;
-  will-change: opacity;
+  will-change: transform, opacity;
   transition: opacity 0.333s cubic-bezier(0,0,0.21,1) 0.4s;
 }
 

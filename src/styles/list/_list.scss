@@ -27,7 +27,7 @@
   will-change: transform;
   padding: 0 16px;
   height: 72px;
-  background: $background;
+  background: #FFF;
   border-bottom: 1px solid #EBEBEB;
   cursor: pointer;
 
@@ -57,6 +57,7 @@
 }
 
 .list-view__item-details {
+  will-change: transform;
   -webkit-flex: 1;
       -ms-flex: 1;
           flex: 1;
@@ -87,7 +88,7 @@
   position: absolute;
   right: 8px;
   top: 8px;
-  opacity: 0.54;
+  opacity: 1;
 }
 
 .list-view__item-title {

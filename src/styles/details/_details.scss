@@ -33,7 +33,7 @@
   height: 100%;
   opacity: 0;
   pointer-events: none;
-  will-change: transform, opacity;
+  // will-change: transform, opacity;
   overflow: hidden;
 
   display: -webkit-flex;
@@ -58,7 +58,13 @@
 }
 
 .details-view__wave {
+  opacity: 0;
+  transition: opacity 0.333s cubic-bezier(0,0,0.21,1) 0.03s;
   pointer-events: none;
+
+  &--visible {
+    opacity: 1;
+  }
 }
 
 .details-view__panel--animatable {
@@ -91,7 +97,7 @@
   background: $background;
   opacity: 0;
   pointer-events: none;
-  will-change: transform;
+  // will-change: transform;
 }
 
 .details-view__box-reveal:after {
@@ -169,6 +175,7 @@
   outline: none;
   cursor: pointer;
   will-change: transform;
+  -webkit-appearance: none;
 }
 
 .details-view__download {
@@ -203,6 +210,7 @@
 }
 
 .details-view__title {
+  will-change: transform;
   color: #FFF;
   font-size: 34px;
   letter-spacing: -0.02em;
@@ -220,6 +228,7 @@
 }
 
 .details-view__playback {
+  // will-change: transform;
   position: absolute;
   width: 56px;
   height: 56px;
@@ -233,6 +242,7 @@
 }
 
 .details-view__playback-toggle {
+  // will-change: transform;
   width: 56px;
   height: 56px;
   position: absolute;
@@ -257,7 +267,9 @@
 }
 
 .details-view__content {
-
+  min-width: 100%;
+  background: #FFF;
+  will-change: transform;
   -webkit-flex: 1;
       -ms-flex: 1;
           flex: 1;
