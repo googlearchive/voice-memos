@@ -42,13 +42,13 @@ handlers:
 
 - url: /scripts/(.*)
   static_files: dist/scripts/\1
-  expiration: "1d"
+  expiration: "365d"
   upload: dist/scripts/(.*)
   secure: always
 
 - url: /third_party/(.*)
   static_files: dist/third_party/\1
-  expiration: "1d"
+  expiration: "365d"
   upload: dist/third_party/(.*)
   secure: always
 
@@ -57,6 +57,7 @@ handlers:
   expiration: "1d"
   upload: dist/styles/(.*)
   secure: always
+  application_readable: true
 
 - url: /LICENSE
   static_files: dist/LICENSE
