@@ -26,7 +26,9 @@ limitations under the License.
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <meta id="theme-color" name="theme-color" content="#4527A0">
     <title>Voice Memos</title>
-    <link rel="stylesheet" href="/styles/voicememo-core.css">
+    <style>
+    {% include "dist/styles/voicememo-core.css" %}
+    </style>
 
     <link rel="manifest" href="/manifest.json">
   </head>
@@ -224,7 +226,7 @@ limitations under the License.
       </svg>
     </div>
 
-    <script src="/scripts/voicememo-core.js"></script>
+    <script src="/scripts/voicememo-core.js" async defer></script>
 
   </body>
 
