@@ -1,6 +1,6 @@
 {
   "name": "voice-memos",
-  "version": "0.1.45",
+  "version": "0.1.48",
   "private": true,
   "engines": {
     "node": ">=0.10.0"
