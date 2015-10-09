@@ -25,6 +25,7 @@ self.oninstall = function(event) {
 
     '/',
     '/images/chrome-touch-icon-192x192.png',
+    '/images/chrome-touch-icon-384x384.png',
     '/images/ic_add_24px.svg',
     '/images/ic_arrow_back_24px.svg',
     '/images/ic_close_24px.svg',
