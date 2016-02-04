@@ -20,15 +20,17 @@ import MemoModel from '../model/MemoModel';
 import PubSubInstance from '../libs/PubSub';
 import RouterInstance from '../libs/Router';
 import DialogInstance from '../libs/Dialog';
+import MediaRecording from '../recording/MediaRecording';
 
 export default class RecordController extends Controller {
 
   constructor () {
     super();
 
+    this.usesMediaRecorder = ('MediaRecorder' in window);
     this.deletePendingRecording = false;
     this.recording = false;
-    this.recorder = null;
+    this.mediaRecording = null;
     this.analyser = null;
     this.view = document.querySelector('.js-record-view');
     this.showViewButton = document.querySelector('.js-new-recording-btn');
@@ -104,14 +106,12 @@ export default class RecordController extends Controller {
   hide () {
     this.recordStartButton.tabIndex = -1;
     this.stopRecording();
+    this.mediaRecording = null;
 
     this.view.classList.remove('record-view--visible');
   }
 
-  drawVolumeReadout (volume) {
-
-    if (!volume)
-      volume = 0;
+  drawVolumeReadout (volume=0) {
 
     this.volumeReadoutCtx.save();
     this.volumeReadoutCtx.clearRect(0,0,4,67);
@@ -135,46 +135,22 @@ export default class RecordController extends Controller {
     this.volumeReadoutCtx.restore();
   }
 
-  killStream () {
-    if (!this.recorder.stream)
-      return;
-
-    if (typeof this.recorder.stream.stop !== 'function')
-      return;
-
-    this.recorder.stream.stop();
-    this.recorder = null;
-  }
-
   startRecording () {
 
     if (this.recording)
       return;
 
-    var volumeData = [];
-    var volumeMax = 0;
-    var volumeSum = 0;
-    var transcript = null;
-    var recognition = null;
+    let volumeData = [];
+    let volumeMax = 1;
+    let volumeSum = 0;
 
     this.recording = true;
+    this.mediaRecording = new MediaRecording();
+    this.mediaRecording.complete.then(audioData => {
 
-    this.recorder = new Recorder({
-
-      workerPath: 'third_party/Recorderjs/recorderWorker.js',
-      recordOpus: false
-
-    });
-
-    this.recorder.addEventListener('dataAvailable', (e) => {
-
-      // recognition.stop()
-
-      if (this.deletePendingRecording) {
-        this.deletePendingRecording = false;
-        this.killStream();
+      // Null audio data represents a cancelled recording.
+      if (audioData === null)
         return;
-      }
 
       // Normalize volume data
       for (var d = 0; d < volumeData.length; d++) {
@@ -182,9 +158,8 @@ export default class RecordController extends Controller {
       }
 
       var newMemo = new MemoModel({
-        audio: e.detail,
-        volumeData: volumeData,
-        transcript: transcript
+        audio: audioData,
+        volumeData: volumeData
       });
 
       // Now show the form...
@@ -200,79 +175,7 @@ export default class RecordController extends Controller {
           router.go(`/edit/${newMemo.url}`);
         });
       });
-
-      this.killStream();
-    });
-
-    var listener = this.recorder.audioContext.createAnalyser();
-    var listenerDataSize = 256;
-    var listenerData = new Uint8Array(listenerDataSize);
-    var trackAudioVolumeBound;
-
-    listener.fftSize = listenerDataSize;
-    listener.smoothingTimeConstant = 0;
-
-    var trackAudioVolume = function () {
-
-      volumeSum = 0;
-      listener.getByteFrequencyData(listenerData);
-
-      // Offset into the frequencies a bit because it
-      // gives better visualization.
-      for (var i = 32; i < listenerData.length; i++) {
-        volumeSum += listenerData[i];
-      }
-
-      var volume = volumeSum / listenerDataSize;
-      if (volume > volumeMax)
-        volumeMax = volume;
-
-      volumeData.push(volume);
-      this.drawVolumeReadout(volume / 3);
-
-      if (!this.recording) {
-        this.drawVolumeReadout();
-        return;
-      }
-
-      requestAnimationFrame(trackAudioVolumeBound);
-    }
-
-    trackAudioVolumeBound = trackAudioVolume.bind(this);
-
-    this.recorder.addEventListener('streamReady', () => {
-
-      setTimeout(() => {
-        requestAnimationFrame( () => {
-          this.recordStopButton.disabled = false;
-          this.recordStartButton.disabled = true;
-          this.recordStopButton.focus();
-        })
-      }, 80);
-
-      this.recorder.start();
-      this.recorder.sourceNode.connect(listener);
-      requestAnimationFrame(trackAudioVolumeBound);
-
-      // if ("webkitSpeechRecognition" in window) {
-
-      //   console.log("Attempting recognition...");
-
-      //   recognition = new webkitSpeechRecognition();
-      //   recognition.onresult = (e) => {
-      //     console.log(e);
-      //     transcript = e.results[0][0];
-      //   };
-
-      //   recognition.onerror = (e) => {
-      //     console.log(e);
-      //   }
-
-      //   recognition.start();
-      // }
-    });
-
-    this.recorder.addEventListener('streamError', () => {
+    }, err => {
 
       DialogInstance()
         .then(dialog => {
@@ -286,12 +189,57 @@ export default class RecordController extends Controller {
 
         })
         .then( () => {
-          this.killStream();
+          this.deletePendingRecording = true;
           this.stopRecording();
         })
         .catch( () => {});
+    })
 
+    setTimeout(() => {
+      requestAnimationFrame( () => {
+        this.recordStopButton.disabled = false;
+        this.recordStartButton.disabled = true;
+        this.recordStopButton.focus();
+      })
+    }, 80);
+
+    this.mediaRecording.analyser.then(analyser => {
+      let analyserDataSize = 256;
+      let analyserStart = 32;
+      let analyserEnd = analyserDataSize;
+      let analyserDataRange = analyserEnd - analyserStart;
+      let analyserData = new Uint8Array(analyserDataSize);
+
+      analyser.fftSize = analyserDataSize;
+      analyser.smoothingTimeConstant = 0.3;
+
+      let trackAudioVolume = () => {
+
+        volumeSum = 0;
+        analyser.getByteFrequencyData(analyserData);
+
+        for (let i = analyserStart; i < analyserEnd; i++) {
+          volumeSum += analyserData[i];
+        }
+
+        let volume = volumeSum / analyserDataRange;
+        if (volume > volumeMax)
+          volumeMax = volume;
+
+        volumeData.push(volume);
+        this.drawVolumeReadout(volume / 10);
+
+        if (!this.recording) {
+          this.drawVolumeReadout();
+          return;
+        }
+
+        requestAnimationFrame(trackAudioVolume);
+      }
+
+      requestAnimationFrame(trackAudioVolume);
     });
+
   }
 
   stopRecording () {
@@ -301,10 +249,11 @@ export default class RecordController extends Controller {
     this.recordStopButton.disabled = true;
     this.recordStartButton.disabled = false;
 
-    if (!this.recorder)
+    if (!this.mediaRecording)
       return;
 
-    this.recorder.stop();
+    this.mediaRecording.stop(this.deletePendingRecording);
+    this.deletePendingRecording = false;
   }
 
 }
