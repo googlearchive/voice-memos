@@ -6,6 +6,24 @@ A sample web app that lets you record voice memos. It uses ES6 classes (via Babe
 
 [See the site here](https://voice-memos.appspot.com/)
 
+## Running application locally
+
+1. Clone project.
+
+2. Install this [Google App Engine SDK For Python](https://cloud.google.com/appengine/downloads#Google_App_Engine_SDK_for_Python).
+
+3. Run SDK app to create symlinks for `dev_appserver.py`.
+
+4. Run `npm install` in __voice-memos/__.
+
+  4.1. If you're using node >= 4.0, you should propably run `npm uninstall --save-dev gulp-sass` and then `npm install --save-dev gulp-sass`.
+
+5. Run `gulp` in __voice-memos/__.
+
+6. Run `dev_appserver.py voice-memos/`
+
+7. Enjoy your local version of app :).
+
 ## License
 
 Copyright 2015 Google, Inc.
