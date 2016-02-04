@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+/* global MediaRecorder */
+
 import Controller from './Controller';
 import MemoModel from '../model/MemoModel';
 import PubSubInstance from '../libs/PubSub';
@@ -94,6 +96,12 @@ export default class RecordController extends Controller {
           }
 
         });
+
+    // Hide the file size warning if the MediaRecorder API is present.
+    if ('MediaRecorder' in window &&
+      typeof MediaRecorder.canRecordMimeType === 'undefined') {
+      document.querySelector('.record-view__warning').style.display = 'none';
+    }
 
   }
 

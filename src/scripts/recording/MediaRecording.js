@@ -21,7 +21,9 @@ export default class MediaRecording {
 
   constructor () {
 
-    this.usesMediaRecorder = ('MediaRecorder' in window);
+    this.usesMediaRecorder = ('MediaRecorder' in window &&
+      typeof MediaRecorder.canRecordMimeType === 'undefined');
+
     this.recorder = this.usesMediaRecorder ?
           new MRRecorder() :
           new LegacyRecorder();
